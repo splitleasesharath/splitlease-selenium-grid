@@ -1,0 +1,18 @@
+# Ignore sensitive files
+credentials
+token
+
+# Ignore binaries and libraries
+*.jar
+*.exe
+
+# Ignore Java Development Kit
+jdk-17_windows-x64_bin
+
+# Ignore temporary or generated files
+*.log
+*.tmp
+*.bak
+
+# Ignore Selenium JAR files
+selenium-server-*.jar

@@ -1,0 +1,1 @@
+java -jar selenium-server-4.13.0.jar hub --host 192.168.196.159

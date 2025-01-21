@@ -1,0 +1,11 @@
+[server]
+host = "192.168.196.159"
+
+[node]
+detect-drivers = false
+
+[[node.driver-configuration]]
+display-name = "Split-Lease-5"
+webdriver-executable = "./chromedriver.exe"
+max-sessions = 3
+stereotype = "{\"browserName\": \"chrome\", \"browserVersion\": \"400\", \"platformName\": \"SCRAPE\"}"
