@@ -366,6 +366,12 @@ def post(listing_data, driver):
         try:
             submit_button = driver.find_element(By.CSS_SELECTOR, '.submit_button .pickbutton')
             submit_button.click()
+
+            submit_button = driver.find_element(By.CSS_SELECTOR, '.submit_button .pickbutton')
+            submit_button.click()
+
+            driver.find_element(By.XPATH, f"//*[contains(text(), '{post_data[1]}')]").click()
+
         except Exception as e:
             print(f"Error interacting with fallback submit button: {e}")
             return
@@ -619,7 +625,8 @@ def post(listing_data, driver):
 
     # Update spreadsheet
     host = listing_data[4]
-    link = driver.find_element(By.XPATH, '//*[@id="new-edit"]/div/div/ul/li[2]/a').get_attribute('href')
+    # link = driver.find_element(By.XPATH, '//*[@id="new-edit"]/div/div/ul/li[2]/a').get_attribute('href')
+    link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
     curr_time = datetime.now(pytz.timezone('America/New_York')).strftime("%H:%M")
     location = f"{post_data[2]}, {post_data[1].capitalize()}" if post_data[2] is not None else post_data[1].capitalize()
     today_date = datetime.now(pytz.timezone('America/New_York')).strftime("%m/%d")
