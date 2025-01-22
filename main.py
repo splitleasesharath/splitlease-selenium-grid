@@ -31,6 +31,18 @@ import base64
 base64.encodestring = base64.encodebytes
 # end fix
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+SLACK_TOKEN = os.getenv('SLACK_TOKEN')
+SLACK_CHANNEL_USER_ID = os.getenv('SLACK_CHANNEL_USER_ID')
+GOOGLE_SHEET_ID = os.getenv('GOOGLE_SHEET_ID')
+GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+WEBHOOK_BASE_URL = os.getenv('WEBHOOK_BASE_URL')
+
+
 # list of computers available
 computers = {'ECOM-BRM-LENOVO': "120",
              'ECOM-BRM-LPTTOP': "121",
@@ -98,8 +110,8 @@ def resource_path(relative_path):
 def send_slack_dm(txtToSend):
     slack_token = "xoxb-719141409925-2913593088630-STaPzBgOjKww3XWYWSkPtsMb"
     data = {
-        'token': slack_token,
-        'channel': 'U02GB3NEP6H',  # User ID.
+        'token': SLACK_TOKEN,
+        'channel': SLACK_CHANNEL_USER_ID,
         'as_user': True,
         'text': txtToSend
     }
@@ -179,7 +191,7 @@ def fixed_keys(keys_to_send):
 
 def pull_tasks():
     # The ID and range of a sample spreadsheet.
-    SAMPLE_SPREADSHEET_ID = '1eBxVRTIfnHO1miRg6grcNrprMGDZ7dvIGrEoFNDTxio'
+    SAMPLE_SPREADSHEET_ID = GOOGLE_SHEET_ID
     SAMPLE_RANGE_NAME = '2:1000'
 
     creds = log_in()
@@ -250,7 +262,7 @@ def repost(listing_data, driver):
     category = category.replace('>', "")
     category = category.replace('<', "")
     category = category.strip()
-    g = geocoder.mapquest([lat, long], method='reverse', key='b7bow6CgalFYwE56sSxA4JT6BpOGqsHU')
+    g = geocoder.mapquest([lat, long], method='reverse', key=GOOGLE_MAPS_API_KEY)
     location = g.osm['addr:city'] + ', ' + g.osm['addr:state']
     # Repost
     driver.find_element(By.CSS_SELECTOR, '.managebtn').click()
@@ -280,9 +292,12 @@ def repost(listing_data, driver):
     # tell slack which machine reposted
     import requests
     import json
-    webhookZap = "https://hooks.zapier.com/hooks/catch/9700515/bz4aegb?computername="
+    import json
+
+    webhookZap = f"{WEBHOOK_BASE_URL}?computername="
     print(listing_data[5])
-    webhook_url = webhookZap + str(listing_data[5]) + '    repost'
+    webhook_url = f"{webhookZap}{str(listing_data[5])} repost"
+
     requests.post(webhook_url, headers={'Content-Type': 'application/json'})
 
 
@@ -592,9 +607,11 @@ def post(listing_data, driver):
     #tell slack which machine posted
     import requests
     import json
-    webhookZap = "https://hooks.zapier.com/hooks/catch/9700515/bz4aegb?computername="
+
+    webhookZap = f"{WEBHOOK_BASE_URL}?computername="
     print(listing_data[5])
-    webhook_url = webhookZap + str(listing_data[5])
+    webhook_url = f"{webhookZap}{str(listing_data[5])}"
+
     requests.post(webhook_url, headers={'Content-Type': 'application/json'})
 
 
@@ -669,9 +686,10 @@ def renew(listing_data, driver):
     # tell slack which machine posted
     import requests
     import json
-    webhookZap = "https://hooks.zapier.com/hooks/catch/9700515/bz4aegb?computername="
+
+    webhookZap = f"{WEBHOOK_BASE_URL}?computername="
     print(listing_data[5])
-    webhook_url = webhookZap + str(listing_data[5]) + '    renewal'
+    webhook_url = f"{webhookZap}{str(listing_data[5])} renewal"
     requests.post(webhook_url, headers={'Content-Type': 'application/json'})
 
     return output
