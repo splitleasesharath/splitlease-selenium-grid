@@ -1,6 +1,8 @@
 # Ignore sensitive files
 credentials
 token
+.env  # Add this to ignore .env files
+*.env  # This will ignore any file with a .env extension (if there are multiple)
 
 # Ignore binaries and libraries
 *.jar
