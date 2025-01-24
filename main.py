@@ -663,14 +663,15 @@ def renew(listing_data, driver):
     driver.get(listing_data[1])
 
     # Get listing data
-    lat = driver.find_element(By.ID, 'map').get_attribute("data-latitude")
-    long = driver.find_element(By.ID, 'map').get_attribute("data-longitude")
+    # lat = driver.find_element(By.ID, 'map').get_attribute("data-latitude")
+    # long = driver.find_element(By.ID, 'map').get_attribute("data-longitude")
     category = driver.find_element(By.CSS_SELECTOR, '.category p').text
     category = category.replace('>', "")
     category = category.replace('<', "")
     category = category.strip()
-    g = geocoder.mapquest([lat, long], method='reverse', key='b7bow6CgalFYwE56sSxA4JT6BpOGqsHU')
-    location = g.osm['addr:city'] + ', ' + g.osm['addr:state']
+    # g = geocoder.mapquest([lat, long], method='reverse', key='b7bow6CgalFYwE56sSxA4JT6BpOGqsHU')
+    # location = g.osm['addr:city'] + ', ' + g.osm['addr:state']
+    location = ''
     curr_time = datetime.now(pytz.timezone('America/New_York')).strftime("%H:%M")
     today_date = datetime.now(pytz.timezone('America/New_York')).strftime("%m/%d")
     host = listing_data[4]
