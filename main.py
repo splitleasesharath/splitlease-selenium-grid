@@ -262,8 +262,10 @@ def repost(listing_data, driver):
     category = category.replace('>', "")
     category = category.replace('<', "")
     category = category.strip()
-    g = geocoder.mapquest([lat, long], method='reverse', key=GOOGLE_MAPS_API_KEY)
-    location = g.osm['addr:city'] + ', ' + g.osm['addr:state']
+    # g = geocoder.mapquest([lat, long], method='reverse', key="b7bow6CgalFYwE56sSxA4JT6BpOGqsHU")
+
+    # location = g.osm['addr:city'] + ', ' + g.osm['addr:state']
+    location = ''
     # Repost
     driver.find_element(By.CSS_SELECTOR, '.managebtn').click()
     driver.implicitly_wait(3)
@@ -274,7 +276,8 @@ def repost(listing_data, driver):
 
     # Get new link
     driver.implicitly_wait(5)
-    link = driver.find_element(By.XPATH, '//*[@id="new-edit"]/div/div/ul/li[2]/a').get_attribute('href')
+    # link = driver.find_element(By.XPATH, '//*[@id="new-edit"]/div/div/ul/li[2]/a').get_attribute('href')
+    link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
 
     # Update account stats
     update_stats(listing_data, driver)
