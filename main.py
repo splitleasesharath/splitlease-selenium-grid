@@ -277,35 +277,38 @@ def repost(listing_data, driver):
     # Get new link
     driver.implicitly_wait(5)
     # link = driver.find_element(By.XPATH, '//*[@id="new-edit"]/div/div/ul/li[2]/a').get_attribute('href')
-    link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
+    # link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
 
-    # Update account stats
-    update_stats(listing_data, driver)
+    try:
+        link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
+        # Update account stats
+        update_stats(listing_data, driver)
 
-    # Close browser
-    driver.quit()
+        # Close browser
+        driver.quit()
 
-    # Return updated listing
-    curr_time = datetime.now(pytz.timezone('America/New_York')).strftime("%H:%M")
-    today_date = datetime.now(pytz.timezone('America/New_York')).strftime("%m/%d")
-    host = listing_data[4]
-    output = [host, listing_data[1], 'Repost', category, link, location,
-              today_date, curr_time, listing_data[5], '-', '-', '-', listing_data[2]]
+        # Return updated listing
+        curr_time = datetime.now(pytz.timezone('America/New_York')).strftime("%H:%M")
+        today_date = datetime.now(pytz.timezone('America/New_York')).strftime("%m/%d")
+        host = listing_data[4]
+        output = [host, listing_data[1], 'Repost', category, link, location,
+                  today_date, curr_time, listing_data[5], '-', '-', '-', listing_data[2]]
 
-    # tell slack which machine reposted
-    import requests
-    import json
-    import json
+        # tell slack which machine reposted
+        import requests
+        import json
+        import json
 
-    webhookZap = f"{WEBHOOK_BASE_URL}?computername="
-    print(listing_data[5])
-    webhook_url = f"{webhookZap}{str(listing_data[5])} repost"
+        webhookZap = f"{WEBHOOK_BASE_URL}?computername="
+        print(listing_data[5])
+        webhook_url = f"{webhookZap}{str(listing_data[5])} repost"
 
-    requests.post(webhook_url, headers={'Content-Type': 'application/json'})
+        requests.post(webhook_url, headers={'Content-Type': 'application/json'})
 
-
-
-    return output
+        return output
+    except NoSuchElementException:
+        print(f"Could not post successfully")
+        driver.quit()
 
 
 """ Gets post data from a sheet"""
@@ -629,20 +632,28 @@ def post(listing_data, driver):
     # Update spreadsheet
     host = listing_data[4]
     # link = driver.find_element(By.XPATH, '//*[@id="new-edit"]/div/div/ul/li[2]/a').get_attribute('href')
-    link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
-    curr_time = datetime.now(pytz.timezone('America/New_York')).strftime("%H:%M")
-    location = f"{post_data[2]}, {post_data[1].capitalize()}" if post_data[2] is not None else post_data[1].capitalize()
-    today_date = datetime.now(pytz.timezone('America/New_York')).strftime("%m/%d")
-    output = [host, listing_data[1], 'Post', category, link, location,
-              today_date, curr_time, listing_data[5], '-', '-', '-', listing_data[2]]
+    # link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
 
-    # Update account stats
-    update_stats(listing_data, driver)
+    try:
+        link = driver.find_element(By.XPATH, '//ul[@class="ul"]/li[2]/a').get_attribute('href')
 
-    # Close browser
-    driver.quit()
+        curr_time = datetime.now(pytz.timezone('America/New_York')).strftime("%H:%M")
+        location = f"{post_data[2]}, {post_data[1].capitalize()}" if post_data[2] is not None else post_data[1].capitalize()
+        today_date = datetime.now(pytz.timezone('America/New_York')).strftime("%m/%d")
+        output = [host, listing_data[1], 'Post', category, link, location,
+                  today_date, curr_time, listing_data[5], '-', '-', '-', listing_data[2]]
 
-    return output
+        # Update account stats
+        update_stats(listing_data, driver)
+
+        # Close browser
+        driver.quit()
+
+        return output
+
+    except NoSuchElementException:
+        print(f"Could not post successfully")
+        driver.quit()
 
 
 """ Renews the listing """
