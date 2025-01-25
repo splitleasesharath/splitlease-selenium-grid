@@ -108,7 +108,6 @@ def resource_path(relative_path):
 
 
 def send_slack_dm(txtToSend):
-    slack_token = "xoxb-719141409925-2913593088630-STaPzBgOjKww3XWYWSkPtsMb"
     data = {
         'token': SLACK_TOKEN,
         'channel': SLACK_CHANNEL_USER_ID,
