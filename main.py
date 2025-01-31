@@ -427,8 +427,9 @@ def post(listing_data, driver):
         pass
 
     # Select the housing category
-    driver.find_element(By.XPATH, f"//*[contains(text(), 'housing offered')]").click()
+    # driver.find_element(By.XPATH, f"//*[contains(text(), 'housing offered')]").click()
 
+    driver.find_element(By.XPATH, f"//form[@class='picker']//input[@type='radio' and @name='id' and @value='ho']").click()
     # If category is given use that category
     if post_data[3]:
         category = post_data[3]
