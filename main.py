@@ -646,7 +646,8 @@ def post(listing_data, driver):
 
     # Submit
     WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#doneWithImages.bigbutton'))).click()
+        EC.element_to_be_clickable((By.XPATH, f"//button[@class='done' and @id='doneWithImages' and @name='go']"))
+    ).click()
 
     # Post
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.button'))).click()
